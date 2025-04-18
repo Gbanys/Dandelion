@@ -1,0 +1,19 @@
+[project]
+name = "dandelion"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "ai-edge-litert>=1.2.0",
+    "onnx>=1.17.0",
+    "onnx-graphsurgeon>=0.5.8",
+    "onnx2tf>=1.27.2",
+    "onnxruntime>=1.21.1",
+    "onnxslim>=0.1.50",
+    "sng4onnx>=1.0.4",
+    "tensorflow>=2.19.0",
+    "tf-keras>=2.19.0",
+    "tflite-support",
+    "ultralytics>=8.3.111",
+]
