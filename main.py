@@ -3,10 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 from io import BytesIO
 from ultralytics import YOLO
-import numpy as np
 
 app = FastAPI()
-model = YOLO("yolov8s.pt")
+model = YOLO("yolov8n_best.pt")  # or your custom model
 
 app.add_middleware(
     CORSMiddleware,
@@ -17,8 +16,11 @@ app.add_middleware(
 
 @app.post("/detect")
 async def detect(image: UploadFile = File(...)):
-    img_data = await image.read()
-    img = Image.open(BytesIO(img_data)).convert("RGB")
+    data = await image.read()
+    img = Image.open(BytesIO(data)).convert("RGB")
+    orig_w, orig_h = img.size
+
+    # run inference
     results = model(img, imgsz=416)[0]
 
     detections = []
@@ -36,4 +38,8 @@ async def detect(image: UploadFile = File(...)):
             "height": y2 - y1,
         })
 
-    return {"detections": detections}
+    return {
+        "image_width": orig_w,
+        "image_height": orig_h,
+        "detections": detections
+    }
